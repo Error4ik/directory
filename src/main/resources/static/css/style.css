@@ -1,0 +1,61 @@
+.size {
+    width: 70%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    text-overflow: ellipsis;
+}
+
+.table-td {
+    text-align: center;
+    width: 10%;
+}
+
+.table-td-name {
+    text-align: center;
+    width: 20%;
+}
+
+.row-centered {
+    text-align: center;
+}
+
+.col-centered {
+    display: inline-block;
+    float: none;
+    margin-right: -4px;
+}
+
+.model-info {
+    width: 45%;
+    text-align: center;
+    padding: 5px;
+}
+
+header {
+    text-align: justify;
+    letter-spacing: 1px;
+    height: 100px;
+    background: #2c3e50;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+header::after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+
+footer {
+    margin-top: 20px;
+    text-align: justify;
+    letter-spacing: 1px;
+    height: 142px;
+    background: #2c3e50;
+    color: #fff;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}

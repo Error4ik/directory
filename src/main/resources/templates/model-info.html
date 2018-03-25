@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/myScrypt.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Model-Info</title>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="padding-top: 20px;">
+            <ol class="breadcrumb">
+                <li>
+                    <a th:href="@{/}">Главная</a>
+                </li>
+                <li>
+                    <a th:href="@{'/directory/info/' + ${model.directory.id}}" th:text="${model.directory.name}"></a>
+                </li>
+                <li class="active" data-th-text="${model.name}">Model</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top: 10px">
+        <div class="row-centered">
+            <h4 th:text="${model.name}"></h4>
+        </div>
+        <table style="width: 100%; table-layout: fixed" class="table table-bordered">
+            <thead>
+            <tr class="row-centered">
+                <th class="model-info">Атрибут</th>
+                <th class="model-info">Значение</th>
+                <th class="table-td">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="property : ${model.properties}" class="row-centered">
+                <td th:text="${property.name}" class="model-info"></td>
+                <td th:text="${property.value}" class="model-info"></td>
+                <td class="table-td">
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+                            Actions<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-toggle="modal" th:attr="data-target='#' + ${property.id}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span>Редактировать</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/property/delete/' + ${property.id} + '/' + ${model.id}}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    <span>Удалить</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="${property.id}" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" th:text="Редактировать"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:id="'edit-form' + ${property.id}"
+                                          th:action="@{'/property/edit/' + ${property.id}}" method="post">
+                                        <div class="input-group">
+                                            <div class="col-md-6">
+                                                <label for="edit-name">Атрибут:</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="glyphicon glyphicon-pencil"></i></span>
+                                                    <input type="text" class="form-control" id="edit-name"
+                                                           th:value="${property.name}" name="name"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="edit-value">Значение:</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="glyphicon glyphicon-pencil"></i></span>
+                                                    <input type="text" class="form-control" id="edit-value"
+                                                           th:value="${property.value}" name="value"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" th:text="Сохранить" class="btn btn-default pull-left"
+                                            th:form="'edit-form' + ${property.id}"></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>
