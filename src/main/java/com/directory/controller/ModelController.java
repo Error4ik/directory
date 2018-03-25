@@ -36,13 +36,13 @@ public class ModelController {
         return new ModelAndView(String.format("redirect:/directory/info/%s", model.getDirectory().getId()));
     }
 
-    @RequestMapping(value = "/delete/{id}/{directoryId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}/{directoryId}")
     public ModelAndView deleteModel(@PathVariable final int id, @PathVariable final int directoryId) {
         this.modelService.deleteModelById(id);
         return new ModelAndView(String.format("redirect:/directory/info/%s", directoryId));
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{id}")
     public ModelAndView editModel(@PathVariable final int id, final String name) {
         Model model = this.modelService.findModelById(id);
         model.setName(name);

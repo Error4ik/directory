@@ -28,20 +28,20 @@ public class DirectoryController {
         return new ModelAndView("redirect:/");
     }
 
-    @RequestMapping(value = "/info/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/info/{id}")
     public ModelAndView getInfoView(@PathVariable final int id) {
         ModelAndView view = new ModelAndView("directory-info");
         view.addObject("directory", this.directoryService.findDirectoryById(id));
         return view;
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete/{id}")
     public ModelAndView deleteDirectory(@PathVariable final int id) {
         this.directoryService.deleteById(id);
         return new ModelAndView("redirect:/");
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/edit/{id}")
     public ModelAndView editDirectory(@PathVariable final int id, final Directory dir) {
         Directory directory = this.directoryService.findDirectoryById(id);
         if (directory != null) {
