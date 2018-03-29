@@ -133,7 +133,7 @@ function editProperty(id) {
     $.ajax({
         url: basic_part_url + '/property/edit',
         method: "POST",
-        data: {"id": id, "value": $("#edit-property-value").val()},
+        data: {"id": id, "value": $("#edit-property-value" + id).val()},
         success: function (data) {
             location.reload()
         },

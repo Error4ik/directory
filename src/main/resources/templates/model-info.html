@@ -86,11 +86,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="edit-property-value">Значение:</label>
+                                                <label th:for="'edit-property-value' + ${property.id}">Значение:</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i
                                                             class="glyphicon glyphicon-pencil"></i></span>
-                                                    <input type="text" class="form-control" id="edit-property-value"
+                                                    <input type="text" class="form-control"
+                                                           th:id="'edit-property-value' + ${property.id}"
                                                            th:value="${property.value}" name="value"
                                                            required="required">
                                                 </div>
