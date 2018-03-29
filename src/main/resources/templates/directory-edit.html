@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script type="text/javascript" th:src="@{/js/myScrypt.js}"></script>
+    <title>Edit Directory</title>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12" style="padding-top: 20px;">
+            <ol class="breadcrumb">
+                <li>
+                    <a th:href="@{/}">Главная</a>
+                </li>
+                <li class="active" data-th-text="${directory.name}">Directory</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="margin-top: 10px">
+        <div class="row-centered">
+            <h4 th:text="${directory.name}"></h4>
+        </div>
+
+        <!--TABLE 1-->
+        <table style="width: 100%; table-layout: fixed" class="table table-bordered">
+            <thead>
+            <tr class="row-centered">
+                <th>Название</th>
+                <th>Описание</th>
+                <th class="table-td">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${directory.name}"></td>
+                <td th:text="${directory.description}"></td>
+                <td class="table-td">
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+                            Действия<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-toggle="modal" th:attr="data-target='#' + ${directory.id}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span>Редактировать</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="modal" data-target="#addAttribute">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span>Добавить Поле</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!--Modal for edit directory-->
+                    <div class="modal fade" th:id="${directory.id}" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" th:text="${directory.name}"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:id="'edit-form' + ${directory.id}">
+                                        <label for="name">Название:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                                            <input type="text" class="form-control" id="name"
+                                                   th:value="${directory.name}" name="name"
+                                                   required="required">
+                                        </div>
+                                        <label for="description">Описание:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i
+                                                    class="glyphicon glyphicon-pencil"></i></span>
+                                            <textarea class="form-control" id="description"
+                                                      th:text="${directory.description}"
+                                                      name="description" required="required"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" th:text="Редактировать" class="btn btn-default pull-left"
+                                            th:form="'edit-form' + ${directory.id}"
+                                            th:onclick="'editDirectory(\'' + ${directory.id} + '\');'"></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Modal Add to new Attribute-->
+                    <div class="modal fade" id="addAttribute" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" th:text="Название"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <label for="attrName">Название:</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
+                                            <input type="text" class="form-control" id="attrName" name="attrName"
+                                                   required="required">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" th:text="Добавить" class="btn btn-default pull-left"
+                                            th:onclick="'addNewAttribute(\'' + ${directory.id} + '\');'"
+                                            data-dismiss="modal"></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--TABLE 2-->
+        <table style="width: 100%; table-layout: fixed" class="table table-bordered">
+            <thead>
+            <tr class="row-centered">
+                <th>Атрибуты</th>
+                <th class="table-td">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="atribute : ${directory.attributes}" class="row-centered">
+                <td th:text="${atribute.name}"></td>
+                <td class="table-td">
+                    <div class="btn-group">
+                        <button class="btn btn-warning btn-xs dropdown-toggle" type="button" data-toggle="dropdown">
+                            Actions<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-toggle="modal" th:attr="data-target='#' + ${atribute.id}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span>Редактировать</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a th:onclick="'deleteAttribute(\'' + ${atribute.id} + '\', \'' + ${directory.id} + '\');'">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    <span>Удалить</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="${atribute.id}" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title" th:text="Редактировать"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:id="'edit-attribute' + ${atribute.id}">
+                                        <div class="input-group">
+                                            <div class="col-md-12">
+                                                <label th:for="'updateName' + ${atribute.id}">Атрибут:</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i
+                                                            class="glyphicon glyphicon-pencil"></i></span>
+                                                    <input type="text" class="form-control"
+                                                           th:id="'updateName' + ${atribute.id}"
+                                                           th:value="${atribute.name}" name="name"
+                                                           required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" th:text="Сохранить" class="btn btn-default pull-left"
+                                            th:form="'edit-attribute' + ${atribute.id}"
+                                            th:onclick="'updateAttribute(\'' + ${atribute.id} + '\');'"
+                                            data-dismiss="modal"></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="footer :: footer"></div>
+</body>
+</html>

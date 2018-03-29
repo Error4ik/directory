@@ -1,16 +1,10 @@
 package com.directory.domain;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Directory entity.
@@ -22,26 +16,33 @@ import java.util.Objects;
 public class Directory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String name;
 
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "directory_id")
+    @OrderBy("name")
+    private Set<DirectoryAttribute> attributes;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "dir_id")
+    @OrderBy("name")
     private List<Model> models;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -59,6 +60,14 @@ public class Directory {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<DirectoryAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(Set<DirectoryAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     public List<Model> getModels() {
@@ -95,10 +104,5 @@ public class Directory {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getDescription(), getUser());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Directory: {id=%s name=%s desc=%s}", this.getId(), this.getName(), this.getDescription());
     }
 }

@@ -2,11 +2,13 @@ package com.directory.service;
 
 import com.directory.domain.Directory;
 import com.directory.domain.Model;
+import com.directory.domain.Property;
 import com.directory.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Model service.
@@ -23,27 +25,37 @@ public class ModelService {
     @Autowired
     private DirectoryService directoryService;
 
+    @Autowired
+    private PropertyService propertyService;
+
     public Model save(final Model model) {
         return this.modelRepository.save(model);
     }
 
-    public List<Model> findAllByDirectoryId(final int id) {
-        return this.modelRepository.findAllByDirectoryIdOrderByName(id);
-    }
-
-    public Model prepareToSave(final List<String> list) {
-        Directory directory = this.directoryService.findDirectoryById(Integer.parseInt(list.remove(0)));
-        Model model = new Model();
+    public void prepareAndSave(final UUID id, final List<String> list) {
+        final Directory directory = this.directoryService.findDirectoryById(id);
+        final Model model = new Model();
         model.setDirectory(directory);
         model.setName(list.remove(0));
-        return model;
+        this.save(model);
+        while (!list.isEmpty()) {
+            final Property property = new Property();
+            property.setModel(model);
+            property.setName(list.remove(0));
+            property.setValue(list.remove(0));
+            this.propertyService.save(property);
+        }
     }
 
-    public void deleteModelById(final int id) {
+    public void deleteModelById(final UUID id) {
         this.modelRepository.delete(id);
     }
 
-    public Model findModelById(final int id) {
-        return this.modelRepository.findOne(id);
+    public Model findModelById(final UUID id) {
+        return this.modelRepository.findById(id);
+    }
+
+    public List<Model> getModels() {
+        return this.modelRepository.findAll();
     }
 }

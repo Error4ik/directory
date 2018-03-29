@@ -4,6 +4,8 @@ import com.directory.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 /**
  * User repository.
  *
@@ -11,9 +13,7 @@ import org.springframework.stereotype.Repository;
  * @since 20.03.2018.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-
+public interface UserRepository extends JpaRepository<User, UUID> {
     User findByEmail(final String email);
-
-    User findById(final int id);
+    User findById(final UUID id);
 }

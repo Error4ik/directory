@@ -1,15 +1,9 @@
 package com.directory.domain;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * User entity.
@@ -21,8 +15,9 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String email;
 
@@ -36,11 +31,11 @@ public class User {
 
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -84,9 +79,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getEmail());
-    }
-
-    public String toString() {
-        return String.format("User: {id=%s email=%s}", this.getId(), this.getEmail());
     }
 }

@@ -1,13 +1,11 @@
 package com.directory.service;
 
-import com.directory.domain.Model;
 import com.directory.domain.Property;
 import com.directory.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * Property service.
@@ -21,35 +19,15 @@ public class PropertyService {
     @Autowired
     private PropertyRepository propertyRepository;
 
-    public Property save(final Property property){
+    public Property save(final Property property) {
         return this.propertyRepository.save(property);
     }
 
-    public List<Property> getPropertiesByModelId(final int id) {
-        return this.propertyRepository.findAllByModelId(id);
-    }
-
-    public void deleteProperty(final int id){
+    public void deleteProperty(final UUID id) {
         this.propertyRepository.delete(id);
     }
 
-    public Property findPropertyById(final int id) {
+    public Property findPropertyById(final UUID id) {
         return this.propertyRepository.findById(id);
-    }
-
-    public void prepareToSave(final List<String> list, final Model model) {
-        List<Property> properties = new ArrayList<>();
-        while (!list.isEmpty()) {
-            Property property = new Property();
-            property.setModel(model);
-            property.setName(list.remove(0));
-            property.setValue(list.remove(0));
-            properties.add(property);
-        }
-        this.saveAll(properties);
-    }
-
-    private void saveAll(final List<Property> properties) {
-        this.propertyRepository.save(properties);
     }
 }

@@ -4,6 +4,7 @@ import com.directory.domain.Property;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Property repository.
@@ -11,9 +12,7 @@ import java.util.List;
  * @author Alexey Voronin.
  * @since 23.03.2018.
  */
-public interface PropertyRepository extends JpaRepository<Property, Integer> {
-
-    Property findById(final int id);
-
-    List<Property> findAllByModelId(final int id);
+public interface PropertyRepository extends JpaRepository<Property, UUID> {
+    Property findById(final UUID id);
+    List<Property> findAllByModelIdOrderByName(final UUID id);
 }

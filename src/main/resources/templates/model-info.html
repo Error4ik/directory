@@ -73,8 +73,7 @@
                                     <h4 class="modal-title" th:text="Редактировать"></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form th:id="'edit-form' + ${property.id}"
-                                          th:action="@{'/property/edit/' + ${property.id}}" method="post">
+                                    <form th:id="'edit-form' + ${property.id}">
                                         <div class="input-group">
                                             <div class="col-md-6">
                                                 <label for="edit-name">Атрибут:</label>
@@ -83,15 +82,15 @@
                                                             class="glyphicon glyphicon-pencil"></i></span>
                                                     <input type="text" class="form-control" id="edit-name"
                                                            th:value="${property.name}" name="name"
-                                                           required="required">
+                                                           disabled>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="edit-value">Значение:</label>
+                                                <label for="edit-property-value">Значение:</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i
                                                             class="glyphicon glyphicon-pencil"></i></span>
-                                                    <input type="text" class="form-control" id="edit-value"
+                                                    <input type="text" class="form-control" id="edit-property-value"
                                                            th:value="${property.value}" name="value"
                                                            required="required">
                                                 </div>
@@ -100,8 +99,10 @@
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" th:text="Сохранить" class="btn btn-default pull-left"
-                                            th:form="'edit-form' + ${property.id}"></button>
+                                    <button type="button" th:text="Сохранить" class="btn btn-default pull-left"
+                                            th:form="'edit-form' + ${property.id}"
+                                            th:onclick="'editProperty(\'' + ${property.id} + '\');'">
+                                    </button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                                 </div>
                             </div>

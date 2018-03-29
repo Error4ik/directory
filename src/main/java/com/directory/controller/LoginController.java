@@ -34,7 +34,7 @@ public class LoginController {
             view.addObject("error", true);
             return view;
         }
-        view.setViewName("index");
+        view.setViewName("redirect:/");
         userService.regUser(user);
         return view;
     }

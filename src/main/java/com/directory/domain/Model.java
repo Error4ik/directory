@@ -1,16 +1,9 @@
 package com.directory.domain;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Model entity.
@@ -22,24 +15,26 @@ import java.util.Objects;
 public class Model {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "directory_id")
+    @JoinColumn(name = "dir_id")
     private Directory directory;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "model_id")
+    @OrderBy("name")
     private List<Property> properties;
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -84,10 +79,5 @@ public class Model {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getDirectory());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Model: {id=%s name=%s %s}", this.getId(), this.getName(), this.getDirectory().toString());
     }
 }

@@ -19,7 +19,7 @@
                 <li>
                     <a th:href="@{/}">Главная</a>
                 </li>
-                <li class="active" data-th-text="${directory.name}">Model</li>
+                <li class="active" data-th-text="${directory.name}"></li>
             </ol>
         </div>
     </div>
@@ -40,47 +40,39 @@
                     <h4 class="modal-title">Создать модель</h4>
                 </div>
                 <div class="modal-body">
-
-                    <form action="" method="post" name="Form" id="myForm">
-                        <input type="hidden" id="directoryId" name="directoryId" th:value="${directory.id}">
+                    <form id="myForm">
                         <div class="row" style="text-align: center; padding: 3px">
                             <label for="model-name">Название Модели</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
-                                <input type="text" id="model-name" class="form-control" name="model-name">
+                                <input type="text" id="model-name" class="form-control" name="model-name" autofocus>
                             </div>
                         </div>
-                        <div class="row" style="text-align: center; padding: 3px" id="row0">
+                        <div class="row" style="text-align: center; padding: 3px" id="row"
+                             th:each="attribute : ${directory.attributes}">
                             <div class="col-md-6">
-                                <label for="attribute[]" id="attLab[]">Атрибут</label>
+                                <label for="attribute" id="attLab">Атрибут</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                    <input type="text" class="form-control" id="attribute[]" name="attr[]" style="width: 100%">
+                                    <input type="text" class="form-control" id="attribute" name="attr"
+                                           style="width: 100%" th:value="${attribute.name}" disabled>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="value[]" id="valLab[]">Значение</label>
+                                <label for="value" id="valLab">Значение</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                    <input type="text" class="form-control" id="value[]" name="val[]" style="width: 100%">
-                                </div >
+                                    <input type="text" class="form-control" id="value" th:name="${attribute.name}"
+                                           style="width: 100%">
+                                </div>
                             </div>
                         </div>
                     </form>
-
-                    <div class="row" style="text-align: center; padding: 10px">
-                        <div class="col-md-6">
-                            <button class="btn btn-default" onclick="createField()">Добавить Строку</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-default" onclick="deleteField()">Удалить Строку</button>
-                        </div>
-                    </div>
                 </div>
-
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-default pull-left"
-                            onclick="createModel()" th:text="Создать" data-dismiss="modal"></button>
+                            th:onclick="'createModel(\'' + ${directory.id} + '\');'" th:text="Создать"
+                            data-dismiss="modal"></button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 </div>
             </div>
@@ -131,21 +123,20 @@
                                     <h4 class="modal-title" th:text="${model.name}"></h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form th:id="'edit-form' + ${model.id}"
-                                          th:action="@{'/model/edit/' + ${model.id}}" method="post">
-                                        <label for="edit-name">Имя:</label>
+                                    <form th:id="'edit-form' + ${model.id}">
+                                        <label th:for="'edit-model-name' + ${model.id}">Имя:</label>
                                         <div class="input-group">
                                         <span class="input-group-addon"><i
                                                 class="glyphicon glyphicon-list-alt"></i></span>
-                                            <input type="text" class="form-control" id="edit-name"
-                                                   th:value="${model.name}" name="name"
-                                                   required="required">
+                                            <input type="text" class="form-control" th:id="'edit-model-name' + ${model.id}"
+                                                   th:value="${model.name}" name="name">
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" th:text="Сохранить" class="btn btn-default pull-left"
-                                            th:form="'edit-form' + ${model.id}"></button>
+                                    <button type="button" th:text="Сохранить" class="btn btn-default pull-left"
+                                            th:form="'edit-form' + ${model.id}"
+                                            th:onclick="'editModel(\'' + ${model.id} + '\');'"></button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                                 </div>
                             </div>

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Model repository.
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 23.03.2018.
  */
 @Repository
-public interface ModelRepository extends JpaRepository<Model, Integer> {
-
-    List<Model> findAllByDirectoryIdOrderByName(final int id);
+public interface ModelRepository extends JpaRepository<Model, UUID> {
+    Model findById(final UUID id);
+    List<Model> findAllByDirectoryId(final UUID id);
 }

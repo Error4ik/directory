@@ -1,12 +1,8 @@
 package com.directory.domain;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Property entity.
@@ -18,8 +14,9 @@ import java.util.Objects;
 public class Property {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @org.hibernate.annotations.Type(type = "pg-uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String name;
 
@@ -29,11 +26,11 @@ public class Property {
     @JoinColumn(name = "model_id")
     private Model model;
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -78,11 +75,5 @@ public class Property {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getValue());
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Property: {id=%s name=%s value=%s %s}",
-                this.getId(), this.getName(), this.getValue(), this.getModel().toString());
     }
 }
